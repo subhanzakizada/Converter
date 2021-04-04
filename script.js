@@ -40,29 +40,59 @@ const poundConversion = (converserBox, convertedBox, opt1, opt2) => {
         if (opt1.value === 'lb') conversion = converserBox.value * 453592 // lb to mg
         else /* if(opt1.value === 'mg') */ conversion = converserBox.value / 453592 // mg to lb
     }
-
+    // if conversion is Not A Number, don't do anything
+    if (isNaN(conversion)) return
     // making 6 decimal points max, if necessary
     // toFixed() makes the decimal points and putting + sign at first removes unnecessary zeros if there are any
     convertedBox.value = +conversion.toFixed(6)
 }
 
 const kilogramConversion = (converserBox, convertedBox, opt1, opt2) => {
+    if (converserBox.value === '') {
+        convertedBox.value = ''
+        return
+    }
+
     let conversion
     if (opt1.value === 'gm' || opt2.value === 'gm') {
         opt1.value === 'gm' ? conversion = converserBox.value / 1000 : conversion = converserBox.value * 1000
     } else if (opt1.value === 'mg' || opt2.value === 'mg') {
         opt1.value === 'mg' ? conversion = converserBox.value / 1000000 : converserBox * 1000000
     }
+    // if conversion is Not A Number, don't do anything
+    if (isNaN(conversion)) return
+    convertedBox.value = +conversion.toFixed(6)
+}
+
+const gramConversion = (converserBox, convertedBox, opt1, opt2) => {
+    if (converserBox.value === '') {
+        convertedBox.value = ''
+        return
+    }
+
+    let conversion
+    if (opt1.value === 'gm' || opt2.value === 'gm') {
+        opt1.value === 'gm' ? conversion = converserBox.value * 1000 : converserBox.value / 1000
+    }
+    
+    if (conversion === NaN) return
+    convertedBox.value = +conversion.toFixed(6)
 }
 
 firstBox.addEventListener('keyup', () => {
     if (optionsChildOne.value === 'lb' || optionsChildTwo.value === 'lb')
         poundConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
+
     else if (optionsChildOne.value === 'kg' || optionsChildTwo.value === 'kg') kilogramConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
+
+    else if (optionsChildOne.value === 'gm' || optionsChildTwo.value === 'gm') gramConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
 })
 
 secondBox.addEventListener('keyup', () => {
     if (optionsChildOne.value === 'gm' || optionsChildTwo.value === 'gm')
         kilogramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
+
     else if (optionsChildOne.value === 'kg' || optionsChildTwo.value === 'kg') kilogramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
+
+    else if (optionsChildOne.value === 'gm' || optionsChildTwo === 'gm') gramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
 })
