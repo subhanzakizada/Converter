@@ -1,3 +1,49 @@
+// Inner HTML for Options
+const massInnerHTML = firstOrSecond => {
+    if (firstOrSecond === 'first') return `
+            <option selected value='kg'>Kilogram</option>
+            <option selected value='lb'>Pound</option>
+            <option value='gm'>Gram</option>
+            <option value='mg'>Milligram</option>`
+
+    else return `
+            <option value='kg'>Kilogram</option>
+            <option selected value='lb'>Pound</option>
+            <option value='gm'>Gram</option>
+            <option value='mg'>Milligram</option>`
+}
+
+const lengthInnerHTML = firstOrSecond => {
+    if (firstOrSecond === 'first') return `
+            <option value='km'>Kilometer</option>
+            <option value='m'>Meter</option>
+            <option value='cm'>Centimeter</option>
+            <option selected value='mi'>Mile</option>
+            <option value='ft'>Foot</option>
+            <option value=in''>Inch</option>`
+    else return `
+            <option selected value='km'>Kilometer</option>
+            <option value='m'>Meter</option>
+            <option value='cm'>Centimeter</option>
+            <option value='mi'>Mile</option>
+            <option value='ft'>Foot</option>
+            <option value=in''>Inch</option>`
+}
+
+const timeInnerHTML = firstOrSecond => {
+    if(firstOrSecond === 'first') return `
+            <option value='c'>Century</option>
+            <option value='dec'>Decade</option>
+            <option value='m'>Month</option>
+            <option value='w'>Week</option>
+            <option value='d'>Day</option>
+            <option value='h'>Hour</option>
+            <option value='s'>Second</option>
+            <option value='ms'>Millisecond</option>`
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Elements
 const optionsParent = document.getElementById('options-parent')
 const optionsChildOne = document.getElementById('options-child-one')
@@ -5,6 +51,9 @@ const optionsChildTwo = document.getElementById('options-child-two')
 const firstBox = document.getElementById('first-box')
 const secondBox = document.getElementById('second-box')
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Convertion Functions
 const poundConversion = (converserBox, convertedBox, opt1, opt2) => {
     // because when multiply empty string('') by something, it gives 0 
     if (converserBox.value === '') {
@@ -74,11 +123,14 @@ const gramConversion = (converserBox, convertedBox, opt1, opt2) => {
     if (opt1.value === 'gm' || opt2.value === 'gm') {
         opt1.value === 'gm' ? conversion = converserBox.value * 1000 : converserBox.value / 1000
     }
-    
+
     if (conversion === NaN) return
     convertedBox.value = +conversion.toFixed(6)
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Event Listeners
 firstBox.addEventListener('keyup', () => {
     if (optionsChildOne.value === 'lb' || optionsChildTwo.value === 'lb')
         poundConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
