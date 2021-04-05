@@ -31,7 +31,7 @@ const lengthInnerHTML = firstOrSecond => {
 }
 
 const timeInnerHTML = firstOrSecond => {
-    if(firstOrSecond === 'first') return `
+    if (firstOrSecond === 'first') return `
             <option value='c'>Century</option>
             <option value='dec'>Decade</option>
             <option value='mon'>Month</option>
@@ -51,7 +51,7 @@ const timeInnerHTML = firstOrSecond => {
             <option value='min'>Minute</option>
             <option selected value='s'>Second</option>
             <option value='ms'>Millisecond</option>`
-    
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,18 +65,47 @@ const secondBox = document.getElementById('second-box')
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Options Change Event Listeners
+
 // Changing the options when user changes parent option
 optionsParent.addEventListener('change', () => {
-    if(optionsParent.selectedOptions[0].value === 'mass') {
+    prevOpt1 = optionsChildOne.value
+    prevOpt2 = optionsChildTwo.value
+    if (optionsParent.selectedOptions[0].value === 'mass') {
         optionsChildOne.innerHTML = massInnerHTML('first')
         optionsChildTwo.innerHTML = massInnerHTML()
-    } else if(optionsParent.selectedOptions[0].value === 'length') {
+    } else if (optionsParent.selectedOptions[0].value === 'length') {
         optionsChildOne.innerHTML = lengthInnerHTML('first')
         optionsChildTwo.innerHTML = lengthInnerHTML()
-    } else if(optionsParent.selectedOptions[0].value === 'time') {
+    } else if (optionsParent.selectedOptions[0].value === 'time') {
         optionsChildOne.innerHTML = timeInnerHTML('first')
         optionsChildTwo.innerHTML = timeInnerHTML()
-    } 
+    }
+})
+
+// If user selects an option(child) as same as other child, swap them up
+let prevOpt1 = optionsChildOne.value
+let prevOpt2 = optionsChildTwo.value
+optionsChildOne.addEventListener('click', () => {
+    prevOpt1 = optionsChildOne.value
+    prevOpt2 = optionsChildTwo.value
+})
+
+optionsChildTwo.addEventListener('click', () => {
+    prevOpt1 = optionsChildOne.value
+    prevOpt2 = optionsChildTwo.value
+})
+
+optionsChildOne.addEventListener('change', () => {
+    if (optionsChildOne.value === optionsChildTwo.value) {
+        optionsChildTwo.value = prevOpt1
+    }
+})
+
+optionsChildTwo.addEventListener('change', () => {
+    if (optionsChildTwo.value === optionsChildOne.value) {
+        optionsChildOne.value = prevOpt2
+    }
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
