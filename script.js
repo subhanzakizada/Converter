@@ -2,7 +2,7 @@
 const massInnerHTML = firstOrSecond => {
     if (firstOrSecond === 'first') return `
             <option selected value='kg'>Kilogram</option>
-            <option selected value='lb'>Pound</option>
+            <option value='lb'>Pound</option>
             <option value='gm'>Gram</option>
             <option value='mg'>Milligram</option>`
 
@@ -34,12 +34,24 @@ const timeInnerHTML = firstOrSecond => {
     if(firstOrSecond === 'first') return `
             <option value='c'>Century</option>
             <option value='dec'>Decade</option>
-            <option value='m'>Month</option>
+            <option value='mon'>Month</option>
             <option value='w'>Week</option>
             <option value='d'>Day</option>
             <option value='h'>Hour</option>
+            <option selected value='min'>Minute</option>
             <option value='s'>Second</option>
             <option value='ms'>Millisecond</option>`
+    else return `
+            <option value='c'>Century</option>
+            <option value='dec'>Decade</option>
+            <option value='mon'>Month</option>
+            <option value='w'>Week</option>
+            <option value='d'>Day</option>
+            <option value='h'>Hour</option>
+            <option value='min'>Minute</option>
+            <option selected value='s'>Second</option>
+            <option value='ms'>Millisecond</option>`
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +62,22 @@ const optionsChildOne = document.getElementById('options-child-one')
 const optionsChildTwo = document.getElementById('options-child-two')
 const firstBox = document.getElementById('first-box')
 const secondBox = document.getElementById('second-box')
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Changing the options when user changes parent option
+optionsParent.addEventListener('change', () => {
+    if(optionsParent.selectedOptions[0].value === 'mass') {
+        optionsChildOne.innerHTML = massInnerHTML('first')
+        optionsChildTwo.innerHTML = massInnerHTML()
+    } else if(optionsParent.selectedOptions[0].value === 'length') {
+        optionsChildOne.innerHTML = lengthInnerHTML('first')
+        optionsChildTwo.innerHTML = lengthInnerHTML()
+    } else if(optionsParent.selectedOptions[0].value === 'time') {
+        optionsChildOne.innerHTML = timeInnerHTML('first')
+        optionsChildTwo.innerHTML = timeInnerHTML()
+    } 
+})
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
