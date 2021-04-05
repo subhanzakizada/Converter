@@ -62,6 +62,7 @@ const optionsChildOne = document.getElementById('options-child-one')
 const optionsChildTwo = document.getElementById('options-child-two')
 const firstBox = document.getElementById('first-box')
 const secondBox = document.getElementById('second-box')
+const swapper = document.getElementById('swapper')
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,6 +70,7 @@ const secondBox = document.getElementById('second-box')
 
 // Changing the options when user changes parent option
 optionsParent.addEventListener('change', () => {
+    resetBoxesValues()
     prevOpt1 = optionsChildOne.value
     prevOpt2 = optionsChildTwo.value
     if (optionsParent.selectedOptions[0].value === 'mass') {
@@ -97,12 +99,14 @@ optionsChildTwo.addEventListener('click', () => {
 })
 
 optionsChildOne.addEventListener('change', () => {
+    resetBoxesValues()
     if (optionsChildOne.value === optionsChildTwo.value) {
         optionsChildTwo.value = prevOpt1
     }
 })
 
 optionsChildTwo.addEventListener('change', () => {
+    resetBoxesValues()
     if (optionsChildTwo.value === optionsChildOne.value) {
         optionsChildOne.value = prevOpt2
     }
@@ -183,6 +187,25 @@ const gramConversion = (converserBox, convertedBox, opt1, opt2) => {
 
     if (conversion === NaN) return
     convertedBox.value = +conversion.toFixed(6)
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Swap Function
+const swap = () => {
+    [firstBox.value, secondBox.value] = [secondBox.value, firstBox.value]
+
+    let temporary = optionsChildOne.value
+    optionsChildOne.value = optionsChildTwo.value
+    optionsChildTwo.value = temporary
+}
+
+swapper.addEventListener('click', swap)
+
+// Reset Boxes' values Function
+function resetBoxesValues() {
+    firstBox.value = ''
+    secondBox.value = ''
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
