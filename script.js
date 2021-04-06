@@ -16,16 +16,16 @@ const massInnerHTML = firstOrSecond => {
 const lengthInnerHTML = firstOrSecond => {
     if (firstOrSecond === 'first') return `
             <option value='km'>Kilometer</option>
+            <option selected value='mi'>Mile</option>
             <option value='m'>Meter</option>
             <option value='cm'>Centimeter</option>
-            <option selected value='mi'>Mile</option>
             <option value='ft'>Foot</option>
             <option value=in''>Inch</option>`
     else return `
             <option selected value='km'>Kilometer</option>
+            <option value='mi'>Mile</option>
             <option value='m'>Meter</option>
             <option value='cm'>Centimeter</option>
-            <option value='mi'>Mile</option>
             <option value='ft'>Foot</option>
             <option value=in''>Inch</option>`
 }
@@ -51,7 +51,6 @@ const timeInnerHTML = firstOrSecond => {
             <option value='min'>Minute</option>
             <option selected value='s'>Second</option>
             <option value='ms'>Millisecond</option>`
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,83 +113,6 @@ optionsChildTwo.addEventListener('change', () => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Convertion Functions
-const poundConversion = (converserBox, convertedBox, opt1, opt2) => {
-    // because when multiply empty string('') by something, it gives 0 
-    if (converserBox.value === '') {
-        convertedBox.value = ''
-        return
-    }
-
-    // this variable gets assigned inside of if & else conditions 
-    let conversion
-
-    // lb to kg and kg to lb conversion
-    if ((opt1.value === 'lb' && opt2.value === 'kg') || opt1.value === 'kg' && opt2.value === 'lb') {
-        if (opt1.value === 'lb')
-            // formula is multiply pound by 0.453592 to get in kg
-            conversion = converserBox.value * 0.453592 // lb to kg
-        else /* if(opt1.value === 'kg') */
-            // formula is multiply kilogram by 2.20462
-            conversion = converserBox.value * 2.20462 // kg to lb
-    }
-
-    // pound to gram and gram to pound
-    else if ((opt1.value === 'lb' && opt2.value === 'gm') || (opt1.value === 'gm' && opt2.value === 'lb')) {
-        if (opt1.value === 'lb') conversion = converserBox.value * 453.592
-        else /* if(opt1.value === 'gm') */ conversion = converserBox.value / 453.592
-
-    }
-
-
-
-    // lb to mg and mg to lb
-    else if ((opt1.value === 'mg' && opt2.value === 'lb') || (opt1.value === 'lb' && opt2.value === 'mg')) {
-        // first box lb and second mg
-        if (opt1.value === 'lb') conversion = converserBox.value * 453592 // lb to mg
-        else /* if(opt1.value === 'mg') */ conversion = converserBox.value / 453592 // mg to lb
-    }
-    // if conversion is Not A Number, don't do anything
-    if (isNaN(conversion)) return
-    // making 6 decimal points max, if necessary
-    // toFixed() makes the decimal points and putting + sign at first removes unnecessary zeros if there are any
-    convertedBox.value = +conversion.toFixed(6)
-}
-
-const kilogramConversion = (converserBox, convertedBox, opt1, opt2) => {
-    if (converserBox.value === '') {
-        convertedBox.value = ''
-        return
-    }
-
-    let conversion
-    if (opt1.value === 'gm' || opt2.value === 'gm') {
-        opt1.value === 'gm' ? conversion = converserBox.value / 1000 : conversion = converserBox.value * 1000
-    } else if (opt1.value === 'mg' || opt2.value === 'mg') {
-        opt1.value === 'mg' ? conversion = converserBox.value / 1000000 : converserBox * 1000000
-    }
-    // if conversion is Not A Number, don't do anything
-    if (isNaN(conversion)) return
-    convertedBox.value = +conversion.toFixed(6)
-}
-
-const gramConversion = (converserBox, convertedBox, opt1, opt2) => {
-    if (converserBox.value === '') {
-        convertedBox.value = ''
-        return
-    }
-
-    let conversion
-    if (opt1.value === 'gm' || opt2.value === 'gm') {
-        opt1.value === 'gm' ? conversion = converserBox.value * 1000 : converserBox.value / 1000
-    }
-
-    if (conversion === NaN) return
-    convertedBox.value = +conversion.toFixed(6)
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 // Swap Function
 const swap = () => {
     [firstBox.value, secondBox.value] = [secondBox.value, firstBox.value]
@@ -210,21 +132,115 @@ function resetBoxesValues() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Event Listeners
+
+// Convertion Functions
+
+class Mass {
+    checker(box1, box2) {
+        if (box1.value === '') {
+            box2.value = ''
+            return true
+        }
+    }
+    kgToLb(box1, box2) {
+        box1.value = +(box2.value * 2.20462).toFixed(6)
+    }
+    lbToKg(box1, box2) {
+        box1.value = +(box2.value / 2.20462).toFixed(6)
+    }
+    kgToGm(box1, box2) {
+        box1.value = +(box2.value * 1000).toFixed(6)
+    }
+    gmToKg(box1, box2) {
+        box1.value = +(box2.value / 1000).toFixed(6)
+    }
+    kgToMg(box1, box2) {
+        box1.value = +(box2.value * 1000000).toFixed(6)
+    }
+    mgToKg(box1, box2) {
+        box1.value = +(box2.value / 1000000).toFixed(6)
+    }
+
+    lbToGm(box1, box2) {
+        box1.value = +(box2.value * 453.592).toFixed(6)
+    }
+    gmToLb(box1, box2) {
+        box1.value = +(box2.value / 453.592).toFixed(6)
+    }
+    lbToMg(box1, box2) {
+        box1.value = +(box2.value * 453592).toFixed(6)
+    }
+    mgToLb(box1, box2) {
+        box1.value = +(box2.value / 453592).toFixed(6)
+    }
+    gmToMg(box1, box2) {
+        box1.value = +(box2.value * 1000).toFixed(6)
+    }
+    mgToGm(box1, box2) {
+        box1.value = +(box2.value / 1000).toFixed(6)
+    }
+}
+
+function conversionChecker(firstMass, secondMass) {
+    if (optionsChildOne.value !== firstMass || optionsChildTwo.value !== secondMass) return false
+    else return true
+}
+
+const mass = new Mass()
+
 firstBox.addEventListener('keyup', () => {
-    if (optionsChildOne.value === 'lb' || optionsChildTwo.value === 'lb')
-        poundConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
-
-    else if (optionsChildOne.value === 'kg' || optionsChildTwo.value === 'kg') kilogramConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
-
-    else if (optionsChildOne.value === 'gm' || optionsChildTwo.value === 'gm') gramConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
+    // If one of them is empty box
+    if (mass.checker(firstBox, secondBox)) return
+    // KG to LB
+    if (conversionChecker('kg', 'lb')) mass.kgToLb(secondBox, firstBox)
+    // LB to KG
+    else if (conversionChecker('lb', 'kg')) mass.lbToKg(secondBox, firstBox)
+    // KG to GM
+    else if (conversionChecker('kg', 'gm')) mass.kgToGm(secondBox, firstBox)
+    // GM to KG
+    else if (conversionChecker('gm', 'kg')) mass.gmToKg(secondBox, firstBox)
+    // KG to MG
+    else if (conversionChecker('kg', 'mg')) mass.kgToMg(secondBox, firstBox)
+    // MG to KG
+    else if (conversionChecker('mg', 'kg')) mass.mgToKg(secondBox, firstBox)
+    // LB to GM
+    else if (conversionChecker('lb', 'gm')) mass.lbToGm(secondBox, firstBox)
+    // GM to LB
+    else if (conversionChecker('gm', 'lb')) mass.gmToLb(secondBox, firstBox)
+    // LB to MG
+    else if (conversionChecker('lb', 'mg')) mass.lbToMg(secondBox, firstBox)
+    // MG to LB
+    else if (conversionChecker('mg', 'lb')) mass.mgToLb(secondBox, firstBox)
+    // GM to MG
+    else if (conversionChecker('gm', 'mg')) mass.gmToMg(secondBox, firstBox)
+    // MG to GM
+    else if (conversionChecker('mg', 'gm')) mass.mgToGm(secondBox, firstBox)
 })
 
 secondBox.addEventListener('keyup', () => {
-    if (optionsChildOne.value === 'gm' || optionsChildTwo.value === 'gm')
-        kilogramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
-
-    else if (optionsChildOne.value === 'kg' || optionsChildTwo.value === 'kg') kilogramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
-
-    else if (optionsChildOne.value === 'gm' || optionsChildTwo === 'gm') gramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
+    if (mass.checker(secondBox, firstBox)) return
+    // KG to LB
+    if (conversionChecker('kg', 'lb')) mass.lbToKg(firstBox, secondBox)
+    // LB to KG
+    else if (conversionChecker('lb', 'kg')) mass.kgToLb(firstBox, secondBox)
+    // KG to GM
+    else if (conversionChecker('kg', 'gm')) mass.gmToKg(firstBox, secondBox)
+    // GM to KG
+    else if (conversionChecker('gm', 'kg')) mass.kgToGm(firstBox, secondBox)
+    // KG to MG
+    else if (conversionChecker('kg', 'mg')) mass.kgToMg(firstBox, secondBox)
+    // MG to KG
+    else if (conversionChecker('mg', 'kg')) mass.mgToKg(firstBox, secondBox)
+    // LB to GM
+    else if (conversionChecker('lb', 'gm')) mass.lbToGm(firstBox, secondBox)
+    // GM to LB
+    else if (conversionChecker('gm', 'lb')) mass.gmToLb(firstBox, secondBox)
+    // LB to MG
+    else if (conversionChecker('lb', 'mg')) mass.lbToMg(firstBox, secondBox)
+    // MG to LB
+    else if (conversionChecker('mg', 'lb')) mass.mgToLb(firstBox, secondBox)
+    // GM to MG
+    else if (conversionChecker('gm', 'mg')) mass.gmToMg(firstBox, secondBox)
+    // MG to GM
+    else if (conversionChecker('mg', 'gm')) mass.mgToGm(firstBox, secondBox)
 })
