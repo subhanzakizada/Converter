@@ -1,0 +1,88 @@
+:root {
+    --title-font: 35px;
+    --box-size: 30px;
+    --option-parent-width: 385px;
+    --option-parent-height: 40px;
+    --option-child-width: 105px;
+    --option-child-height: 15px;
+}
+html body {
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 25vh;    
+}
+
+#page-title {
+    text-align: center;
+    font-size: var(--title-font)
+}
+
+#options-parent {
+    display: block;
+    margin-bottom: 15px;
+    width: var(--option-parent-width);
+    height: var(--option-parent-height);
+}
+
+.options-child {
+    position: relative;
+    top: 14px;
+    width: var(--option-child-width);
+}
+
+#options-child-one {
+    right: 71px;
+}
+
+#swapper {
+    position: relative;
+    top: 10px;
+    font-size: 24px;
+}
+
+#swapper:hover {
+    cursor: pointer;
+    font-size: 26px;
+}
+
+#options-child-two {
+    left: 71px;
+}
+
+.box {
+    text-align: center;
+    height: var(--box-size);
+}
+
+#equal-sign {
+    font-weight: bold;
+    font-size: 40px;
+    position: relative;
+    top: 7.5px;
+}
+
+select:hover, input:hover {
+    background: rgba(5, 5, 5, 0.1);
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+select:active, input:active {
+    background: rgba(144, 124, 85, 0.1);
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+}

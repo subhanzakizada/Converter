@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+    <link rel='stylesheet' href='style.css'>
+    <title>Convertion</title>
+</head>
+
+<body>
+    <div id='container'>
+        <!-- Title -->
+        <h1 id='page-title'>Converter</h1>
+        
+        <!--   Break     -->
+        <div class='break'></div>
+        
+        <!-- Options Parent -->
+        <select id='options-parent'>
+            <option selected value='mass'>Mass</option>
+            <option value='length'>Length</option>
+            <option value='time'>Time</option>
+        </select>
+        
+        <!--  Break -->
+        <div class='break'></div>
+        
+        <!-- Options Child One -->
+        <select class='options-child' id='options-child-one'>
+            <option selected value='kg'>Kilogram</option>
+            <option value='lb'>Pound</option>
+            <option value='gm'>Gram</option>
+            <option value='mg'>Milligram</option>
+        </select>
+
+        <!-- Swapper -->
+        <div id='swapper'><span>🔀</span></div>
+
+        <!-- Options Child Two -->
+        <select class='options-child' id='options-child-two'>
+            <option value='kg'>Kilogram</option>
+            <option selected value='lb'>Pound</option>
+            <option value='gm'>Gram</option>
+            <option value='mg'>Milligram</option>
+        </select>
+        
+        <!--  Break -->
+        <div class='break'></div>
+       
+         <!-- Conversion Boxes -->
+        <div id='conversion-boxes-parent'>
+            <input type='text' class='box' id='first-box'>
+            <span id='equal-sign'>=</span>
+            <input type='text' class='box' id='second-box'>
+        </div>
+
+    </div>
+
+
+    <script src='script.js'></script>
+</body></html>
