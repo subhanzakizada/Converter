@@ -34,6 +34,7 @@ const timeInnerHTML = firstOrSecond => {
     if (firstOrSecond === 'first') return `
             <option value='c'>Century</option>
             <option value='dec'>Decade</option>
+            <option value='y'>Year</option>
             <option value='mon'>Month</option>
             <option value='w'>Week</option>
             <option value='d'>Day</option>
@@ -44,6 +45,7 @@ const timeInnerHTML = firstOrSecond => {
     else return `
             <option value='c'>Century</option>
             <option value='dec'>Decade</option>
+            <option value='y'>Year</option>
             <option value='mon'>Month</option>
             <option value='w'>Week</option>
             <option value='d'>Day</option>
@@ -139,7 +141,7 @@ const checkEmpty = (box1, box2) => {
         return false
     }
     return true
-    
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,7 +191,7 @@ class Length {
             case 'km':
                 return val.value
             case 'mi':
-                return val.value / 1.60934
+                return val.value / 0.621371
             case 'm':
                 return val.value / 1000
             case 'ft':
@@ -208,7 +210,7 @@ class Length {
                 convertedBox.value = val.toFixed(6)
                 break
             case 'mi':
-                convertedBox.value = +(val * 1.60934).toFixed(6)
+                convertedBox.value = +(val * 0.621371).toFixed(6)
                 break
             case 'm':
                 convertedBox.value = +(val * 1000).toFixed(6)
@@ -226,12 +228,77 @@ class Length {
     }
 }
 
+// Time
+class Time {
+    // converting to hour
+    convertToH(opt, val) {
+        switch (opt.value) {
+            case 'c':
+                return val.value * 876000
+            case 'dec':
+                return val.value * 87600
+            case 'y':
+                return val.value * 8760
+            case 'mon':
+                return val.value * 730
+            case 'w':
+                return val.value * 168
+            case 'd':
+                return val.value * 24
+            case 'h':
+                return val.value
+            case 'min':
+                return val.value / 60
+            case 's':
+                return val.value / 3600
+            case 'ms':
+                return val.value / 3.6e+6
+        }
+    }
+
+    convertAndDisplay(convertedBox, type, val) {
+        switch (type.value) {
+            case 'c':
+                convertedBox.value = (val / 876000).toFixed(6)
+                break
+            case 'dec':
+                convertedBox.value = +(val / 87600).toFixed(6)
+                break
+            case 'y':
+                convertedBox.value = +(val / 8760).toFixed(6)
+                break
+            case 'mon':
+                convertedBox.value = +(val / 730).toFixed(6)
+                break
+            case 'w':
+                convertedBox.value = +(val / 168).toFixed(6)
+                break
+            case 'd':
+                convertedBox.value = +(val / 24).toFixed(6)
+                break
+            case 'h':
+                convertedBox.value = +val.toFixed(6)
+                break
+            case 'min':
+                convertedBox.value = +(val * 60).toFixed(6)
+                break
+            case 's':
+                convertedBox.value = +(val * 3600).toFixed(5)
+                break
+            case 'ms':
+                convertedBox.value = +(val * 3.6e+6).toFixed(6)
+                break
+        }
+    }
+}
+
 // Class Variables
 const mass = new Mass()
 const length = new Length()
+const time = new Time()
 
 // Checking the option parent.value and executing right function
-const checkOptionParent = (massFn, lengthFn) => {
+const checkOptionParent = (massFn, lengthFn, timeFn) => {
     switch (checkOptionParent.value) {
         case 'mass':
             massFn
@@ -239,12 +306,12 @@ const checkOptionParent = (massFn, lengthFn) => {
         case 'length':
             lengthFn
             break
+        case 'time':
+            timeFn
     }
 }
 
 // Box Event Listeners
-firstBox.addEventListener('keyup', () => checkEmpty(firstBox, secondBox) ? checkOptionParent(mass.convertAndDisplay(secondBox, optionsChildTwo, mass.convertToKg(optionsChildOne, firstBox)), length.convertAndDisplay(secondBox, optionsChildTwo,  length.convertToKm(optionsChildOne, firstBox))) : undefined
-)
+firstBox.addEventListener('keyup', () => checkEmpty(firstBox, secondBox) ? checkOptionParent(mass.convertAndDisplay(secondBox, optionsChildTwo, mass.convertToKg(optionsChildOne, firstBox)), length.convertAndDisplay(secondBox, optionsChildTwo, length.convertToKm(optionsChildOne, firstBox)), time.convertAndDisplay(secondBox, optionsChildTwo, time.convertToH(optionsChildOne, firstBox))) : undefined)
 
-secondBox.addEventListener('keyup', () => checkEmpty(secondBox, firstBox) ? checkOptionParent(mass.convertAndDisplay(firstBox, optionsChildOne, mass.convertToKg(optionsChildTwo, secondBox)), length.convertAndDisplay(firstBox, optionsChildOne, length.convertToKm(optionsChildTwo, secondBox))) : undefined
-)
+secondBox.addEventListener('keyup', () => checkEmpty(secondBox, firstBox) ? checkOptionParent(mass.convertAndDisplay(firstBox, optionsChildOne, mass.convertToKg(optionsChildTwo, secondBox)), length.convertAndDisplay(firstBox, optionsChildOne, length.convertToKm(optionsChildTwo, secondBox)), time.convertAndDisplay(firstBox, optionsChildOne, time.convertToH(optionsChildTwo, secondBox))) : undefined)
