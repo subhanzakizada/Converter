@@ -15,25 +15,26 @@ const massInnerHTML = firstOrSecond => {
 
 const lengthInnerHTML = firstOrSecond => {
     if (firstOrSecond === 'first') return `
+            <option selected value='mi'>Mile</option>
             <option value='km'>Kilometer</option>
             <option value='m'>Meter</option>
-            <option value='cm'>Centimeter</option>
-            <option selected value='mi'>Mile</option>
             <option value='ft'>Foot</option>
-            <option value=in''>Inch</option>`
+            <option value=in''>Inch</option>
+            <option value='cm'>Centimeter</option>`
     else return `
+            <option value='mi'>Mile</option>
             <option selected value='km'>Kilometer</option>
             <option value='m'>Meter</option>
-            <option value='cm'>Centimeter</option>
-            <option value='mi'>Mile</option>
             <option value='ft'>Foot</option>
-            <option value=in''>Inch</option>`
+            <option value='in'>Inch</option>
+            <option value='cm'>Centimeter</option>`
 }
 
 const timeInnerHTML = firstOrSecond => {
     if (firstOrSecond === 'first') return `
             <option value='c'>Century</option>
             <option value='dec'>Decade</option>
+            <option value='y'>Year</option>
             <option value='mon'>Month</option>
             <option value='w'>Week</option>
             <option value='d'>Day</option>
@@ -44,6 +45,7 @@ const timeInnerHTML = firstOrSecond => {
     else return `
             <option value='c'>Century</option>
             <option value='dec'>Decade</option>
+            <option value='y'>Year</option>
             <option value='mon'>Month</option>
             <option value='w'>Week</option>
             <option value='d'>Day</option>
@@ -51,12 +53,11 @@ const timeInnerHTML = firstOrSecond => {
             <option value='min'>Minute</option>
             <option selected value='s'>Second</option>
             <option value='ms'>Millisecond</option>`
-
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Elements
+//// Elements
 const optionsParent = document.getElementById('options-parent')
 const optionsChildOne = document.getElementById('options-child-one')
 const optionsChildTwo = document.getElementById('options-child-two')
@@ -114,83 +115,6 @@ optionsChildTwo.addEventListener('change', () => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Convertion Functions
-const poundConversion = (converserBox, convertedBox, opt1, opt2) => {
-    // because when multiply empty string('') by something, it gives 0 
-    if (converserBox.value === '') {
-        convertedBox.value = ''
-        return
-    }
-
-    // this variable gets assigned inside of if & else conditions 
-    let conversion
-
-    // lb to kg and kg to lb conversion
-    if ((opt1.value === 'lb' && opt2.value === 'kg') || opt1.value === 'kg' && opt2.value === 'lb') {
-        if (opt1.value === 'lb')
-            // formula is multiply pound by 0.453592 to get in kg
-            conversion = converserBox.value * 0.453592 // lb to kg
-        else /* if(opt1.value === 'kg') */
-            // formula is multiply kilogram by 2.20462
-            conversion = converserBox.value * 2.20462 // kg to lb
-    }
-
-    // pound to gram and gram to pound
-    else if ((opt1.value === 'lb' && opt2.value === 'gm') || (opt1.value === 'gm' && opt2.value === 'lb')) {
-        if (opt1.value === 'lb') conversion = converserBox.value * 453.592
-        else /* if(opt1.value === 'gm') */ conversion = converserBox.value / 453.592
-
-    }
-
-
-
-    // lb to mg and mg to lb
-    else if ((opt1.value === 'mg' && opt2.value === 'lb') || (opt1.value === 'lb' && opt2.value === 'mg')) {
-        // first box lb and second mg
-        if (opt1.value === 'lb') conversion = converserBox.value * 453592 // lb to mg
-        else /* if(opt1.value === 'mg') */ conversion = converserBox.value / 453592 // mg to lb
-    }
-    // if conversion is Not A Number, don't do anything
-    if (isNaN(conversion)) return
-    // making 6 decimal points max, if necessary
-    // toFixed() makes the decimal points and putting + sign at first removes unnecessary zeros if there are any
-    convertedBox.value = +conversion.toFixed(6)
-}
-
-const kilogramConversion = (converserBox, convertedBox, opt1, opt2) => {
-    if (converserBox.value === '') {
-        convertedBox.value = ''
-        return
-    }
-
-    let conversion
-    if (opt1.value === 'gm' || opt2.value === 'gm') {
-        opt1.value === 'gm' ? conversion = converserBox.value / 1000 : conversion = converserBox.value * 1000
-    } else if (opt1.value === 'mg' || opt2.value === 'mg') {
-        opt1.value === 'mg' ? conversion = converserBox.value / 1000000 : converserBox * 1000000
-    }
-    // if conversion is Not A Number, don't do anything
-    if (isNaN(conversion)) return
-    convertedBox.value = +conversion.toFixed(6)
-}
-
-const gramConversion = (converserBox, convertedBox, opt1, opt2) => {
-    if (converserBox.value === '') {
-        convertedBox.value = ''
-        return
-    }
-
-    let conversion
-    if (opt1.value === 'gm' || opt2.value === 'gm') {
-        opt1.value === 'gm' ? conversion = converserBox.value * 1000 : converserBox.value / 1000
-    }
-
-    if (conversion === NaN) return
-    convertedBox.value = +conversion.toFixed(6)
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 // Swap Function
 const swap = () => {
     [firstBox.value, secondBox.value] = [secondBox.value, firstBox.value]
@@ -200,6 +124,7 @@ const swap = () => {
     optionsChildTwo.value = temporary
 }
 
+// Swapper Event Listener
 swapper.addEventListener('click', swap)
 
 // Reset Boxes' values Function
@@ -208,23 +133,185 @@ function resetBoxesValues() {
     secondBox.value = ''
 }
 
+// checks if box is empty and assign next box also empty string
+// we need this because when we calculate something with empty string('') it gives number such as '' * 2 = 0 or '' - 2 = -2
+const checkEmpty = (box1, box2) => {
+    if (box1.value === '') {
+        box2.value = ''
+        return false
+    }
+    return true
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Event Listeners
-firstBox.addEventListener('keyup', () => {
-    if (optionsChildOne.value === 'lb' || optionsChildTwo.value === 'lb')
-        poundConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
+// Convertion Classes
 
-    else if (optionsChildOne.value === 'kg' || optionsChildTwo.value === 'kg') kilogramConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
+// Mass
+class Mass {
+    // converting to kg
+    convertToKg(opt, val) {
+        switch (opt.value) {
+            case 'kg':
+                return val.value
+            case 'lb':
+                return +(val.value / 2.20462)
+            case 'gm':
+                return +(val.value / 1000)
+            case 'mg':
+                return +(val.value / 1000000)
+        }
+    }
 
-    else if (optionsChildOne.value === 'gm' || optionsChildTwo.value === 'gm') gramConversion(firstBox, secondBox, optionsChildOne.selectedOptions[0], optionsChildTwo.selectedOptions[0])
-})
+    // converting the result from convertToKg fn to opposite box's option and displaying 
+    convertAndDisplay(convertedBox, type, val) {
+        switch (type.value) {
+            case 'kg':
+                convertedBox.value = val.toFixed(6)
+                break
+            case 'lb':
+                convertedBox.value = +(val * 2.20462).toFixed(6)
+                break
+            case 'gm':
+                convertedBox.value = +(val * 1000).toFixed(6)
+                break
+            case 'mg':
+                convertedBox.value = +(val * 1000000).toFixed(6)
+                break
+        }
+    }
+}
 
-secondBox.addEventListener('keyup', () => {
-    if (optionsChildOne.value === 'gm' || optionsChildTwo.value === 'gm')
-        kilogramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
+// Length
+class Length {
+    // converting to km
+    convertToKm(opt, val) {
+        switch (opt.value) {
+            case 'km':
+                return val.value
+            case 'mi':
+                return val.value / 0.621371
+            case 'm':
+                return val.value / 1000
+            case 'ft':
+                return val.value / 3280.839895
+            case 'in':
+                return val.value / 39370.1
+            case 'cm':
+                return val.value / 100000
+        }
+    }
 
-    else if (optionsChildOne.value === 'kg' || optionsChildTwo.value === 'kg') kilogramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
+    // converting the result from convertToKg fn to opposite box's option and displaying 
+    convertAndDisplay(convertedBox, type, val) {
+        switch (type.value) {
+            case 'km':
+                convertedBox.value = val.toFixed(6)
+                break
+            case 'mi':
+                convertedBox.value = +(val * 0.621371).toFixed(6)
+                break
+            case 'm':
+                convertedBox.value = +(val * 1000).toFixed(6)
+                break
+            case 'ft':
+                convertedBox.value = +(val * 3280.839895).toFixed(6)
+                break
+            case 'in':
+                convertedBox.value = +(val * 39370.1).toFixed(6)
+                break
+            case 'cm':
+                convertedBox.value = +(val * 100000).toFixed(6)
+                break
+        }
+    }
+}
 
-    else if (optionsChildOne.value === 'gm' || optionsChildTwo === 'gm') gramConversion(secondBox, firstBox, optionsChildTwo.selectedOptions[0], optionsChildOne.selectedOptions[0])
-})
+// Time
+class Time {
+    // converting to hour
+    convertToH(opt, val) {
+        switch (opt.value) {
+            case 'c':
+                return val.value * 876000
+            case 'dec':
+                return val.value * 87600
+            case 'y':
+                return val.value * 8760
+            case 'mon':
+                return val.value * 730
+            case 'w':
+                return val.value * 168
+            case 'd':
+                return val.value * 24
+            case 'h':
+                return val.value
+            case 'min':
+                return val.value / 60
+            case 's':
+                return val.value / 3600
+            case 'ms':
+                return val.value / 3.6e+6
+        }
+    }
+
+    convertAndDisplay(convertedBox, type, val) {
+        switch (type.value) {
+            case 'c':
+                convertedBox.value = (val / 876000).toFixed(6)
+                break
+            case 'dec':
+                convertedBox.value = +(val / 87600).toFixed(6)
+                break
+            case 'y':
+                convertedBox.value = +(val / 8760).toFixed(6)
+                break
+            case 'mon':
+                convertedBox.value = +(val / 730).toFixed(6)
+                break
+            case 'w':
+                convertedBox.value = +(val / 168).toFixed(6)
+                break
+            case 'd':
+                convertedBox.value = +(val / 24).toFixed(6)
+                break
+            case 'h':
+                convertedBox.value = +val.toFixed(6)
+                break
+            case 'min':
+                convertedBox.value = +(val * 60).toFixed(6)
+                break
+            case 's':
+                convertedBox.value = +(val * 3600).toFixed(5)
+                break
+            case 'ms':
+                convertedBox.value = +(val * 3.6e+6).toFixed(6)
+                break
+        }
+    }
+}
+
+// Class Variables
+const mass = new Mass()
+const length = new Length()
+const time = new Time()
+
+// Checking the option parent.value and executing right function
+const checkOptionParent = (massFn, lengthFn, timeFn) => {
+    switch (checkOptionParent.value) {
+        case 'mass':
+            massFn
+            break
+        case 'length':
+            lengthFn
+            break
+        case 'time':
+            timeFn
+    }
+}
+
+// Box Event Listeners
+firstBox.addEventListener('keyup', () => checkEmpty(firstBox, secondBox) ? checkOptionParent(mass.convertAndDisplay(secondBox, optionsChildTwo, mass.convertToKg(optionsChildOne, firstBox)), length.convertAndDisplay(secondBox, optionsChildTwo, length.convertToKm(optionsChildOne, firstBox)), time.convertAndDisplay(secondBox, optionsChildTwo, time.convertToH(optionsChildOne, firstBox))) : undefined)
+
+secondBox.addEventListener('keyup', () => checkEmpty(secondBox, firstBox) ? checkOptionParent(mass.convertAndDisplay(firstBox, optionsChildOne, mass.convertToKg(optionsChildTwo, secondBox)), length.convertAndDisplay(firstBox, optionsChildOne, length.convertToKm(optionsChildTwo, secondBox)), time.convertAndDisplay(firstBox, optionsChildOne, time.convertToH(optionsChildTwo, secondBox))) : undefined)
